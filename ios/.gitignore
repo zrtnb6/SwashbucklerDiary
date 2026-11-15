@@ -1,0 +1,38 @@
+# ---- macOS ----
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ---- Xcode ----
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+Payload/
+ExportOptions.plist
+
+# ---- 测试与构建日志 ----
+test.log
+*.gcda
+*.gcno
+
+# ---- 签名材料：绝对不要提交 ----
+*.p12
+*.mobileprovision
+*.cer
+*.key
+*.pem
+.env
+secrets/
+
+# ---- .NET 构建产物（保留原有工程，仅忽略产物）----
+[Bb]in/
+[Oo]bj/
+*.user
