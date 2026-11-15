@@ -1,0 +1,25 @@
+# ---- macOS ----
+.DS_Store
+
+# ---- Xcode ----
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.ipa
+*.dSYM
+Payload/
+ExportOptions.plist
+
+# ---- 测试与构建日志 ----
+test.log
+
+# ---- 签名材料：绝对不要提交 ----
+*.p12
+*.mobileprovision
+*.cer
+*.key
+*.pem
+.env
+secrets/
