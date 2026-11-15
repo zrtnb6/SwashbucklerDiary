@@ -126,6 +126,86 @@ Runner 用 `macos-15`（自带 Xcode 16.4 / iOS 18.5 SDK）。
 工作流会检测 `BUILD_CERTIFICATE_BASE64` 是否存在，存在才走签名分支，
 不存在就只产出未签名包，不会失败。
 
+## 五、本地出 ad-hoc IPA（无证书时的可交付产物）
+
+没有 Apple 开发者证书、也没有描述文件时，仍然可以产出一个**结构完整、已签名**的 IPA：
+用 ad-hoc 身份（`-`）重签。它能被 TrollStore 直接安装，也能作为重签工具的输入。
+
+```bash
+cd ios
+
+# 1. 编 Release（设备架构，不签名）
+xcodebuild -project SwashbucklerDiary.xcodeproj -scheme SwashbucklerDiary \
+  -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+  -derivedDataPath build-ipa \
+  CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+
+# 2. 组包并 ad-hoc 签名
+APP=build-ipa/Build/Products/Release-iphoneos/SwashbucklerDiary.app
+rm -rf /tmp/ipa-stage && mkdir -p /tmp/ipa-stage/Payload
+cp -R "$APP" /tmp/ipa-stage/Payload/
+codesign --remove-signature /tmp/ipa-stage/Payload/SwashbucklerDiary.app 2>/dev/null || true
+codesign --force --sign - --timestamp=none --generate-entitlement-der \
+  /tmp/ipa-stage/Payload/SwashbucklerDiary.app
+
+# 3. 硬校验（不通过就不要出包）
+codesign --verify --deep --strict --verbose=2 /tmp/ipa-stage/Payload/SwashbucklerDiary.app
+codesign -dv /tmp/ipa-stage/Payload/SwashbucklerDiary.app 2>&1 | grep "Signature=adhoc"
+
+# 4. 打包
+cd /tmp/ipa-stage && zip -qry SwashbucklerDiary-1.0.0-adhoc.ipa Payload
+```
+
+校验要点：
+
+- `codesign -dv` 必须出现 `Signature=adhoc` 与 `CodeDirectory ... flags=0x2(adhoc)`；
+- `codesign --verify --deep --strict` 必须打 `valid on disk` + `satisfies its Designated Requirement`；
+- 打 zip 之后**再解包复验一次**，确认压缩没破坏 `_CodeSignature`；
+- `lipo -info` 确认是 `arm64`（不是模拟器架构）。
+
+仍然要强调：**ad-hoc 签名不等于可以直接安装。** 未越狱设备必须用自己的 Apple ID 重签，
+TrollStore 用户可以直接装。这一点不要在交付时含糊。
+
+## 五、本地出 ad-hoc IPA（无证书时的可交付产物）
+
+没有 Apple 开发者证书、也没有描述文件时，仍然可以产出一个**结构完整、已签名**的 IPA：
+用 ad-hoc 身份（`-`）重签。它能被 TrollStore 直接安装，也能作为重签工具的输入。
+
+```bash
+cd ios
+
+# 1. 编 Release（设备架构，不签名）
+xcodebuild -project SwashbucklerDiary.xcodeproj -scheme SwashbucklerDiary \
+  -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' \
+  -derivedDataPath build-ipa \
+  CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+
+# 2. 组包并 ad-hoc 签名
+APP=build-ipa/Build/Products/Release-iphoneos/SwashbucklerDiary.app
+rm -rf /tmp/ipa-stage && mkdir -p /tmp/ipa-stage/Payload
+cp -R "$APP" /tmp/ipa-stage/Payload/
+codesign --remove-signature /tmp/ipa-stage/Payload/SwashbucklerDiary.app 2>/dev/null || true
+codesign --force --sign - --timestamp=none --generate-entitlement-der \
+  /tmp/ipa-stage/Payload/SwashbucklerDiary.app
+
+# 3. 硬校验（不通过就不要出包）
+codesign --verify --deep --strict --verbose=2 /tmp/ipa-stage/Payload/SwashbucklerDiary.app
+codesign -dv /tmp/ipa-stage/Payload/SwashbucklerDiary.app 2>&1 | grep "Signature=adhoc"
+
+# 4. 打包
+cd /tmp/ipa-stage && zip -qry SwashbucklerDiary-1.0.0-adhoc.ipa Payload
+```
+
+校验要点：
+
+- `codesign -dv` 必须出现 `Signature=adhoc` 与 `CodeDirectory ... flags=0x2(adhoc)`；
+- `codesign --verify --deep --strict` 必须打 `valid on disk` + `satisfies its Designated Requirement`；
+- 打 zip 之后**再解包复验一次**，确认压缩没破坏 `_CodeSignature`；
+- `lipo -info` 确认是 `arm64`（不是模拟器架构）。
+
+仍然要强调：**ad-hoc 签名不等于可以直接安装。** 未越狱设备必须用自己的 Apple ID 重签，
+TrollStore 用户可以直接装。这一点不要在交付时含糊。
+
 ## 五、安装到真机
 
 ### 方式 A：Xcode（最省事）

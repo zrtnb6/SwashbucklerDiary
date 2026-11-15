@@ -3,7 +3,10 @@
 
 # ---- Xcode ----
 build/
+build*/
+**/build*/
 DerivedData/
+*.sdkstatcache
 *.xcuserstate
 xcuserdata/
 *.moved-aside

@@ -35,7 +35,7 @@ enum SQLValue: Hashable {
             if data.isEmpty {
                 sqlite3_bind_zeroblob(statement, index, 0)
             } else {
-                data.withUnsafeBytes { buffer in
+                _ = data.withUnsafeBytes { buffer in
                     sqlite3_bind_blob(statement, index, buffer.baseAddress, Int32(data.count), SQLITE_TRANSIENT)
                 }
             }

@@ -203,7 +203,8 @@ struct WebDAVSettingsPage: View {
         account = config.account
         password = config.password
         if config.isConfigured {
-            prepareClient(silently: true)
+            // 静默预建客户端：失败不影响页面展示，用户点「测试连接」时会拿到明确报错
+            _ = prepareClient(silently: true)
         }
     }
 
