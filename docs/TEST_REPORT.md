@@ -150,13 +150,13 @@ WebDAV 地址规范化（含拒绝 `ftp://`）、中文文件名百分号编码�
 
 | 项 | 结果 |
 | --- | --- |
+| Run | [#43740086998](https://github.com/zrtnb6/SwashbucklerDiary/actions/runs/43740086998) |
 | Build & Test | ✅ success |
 | Package IPA | ✅ success |
 | 单元测试 | `Executed 54 tests, with 0 failures (0 unexpected) in 50.443s` |
 | 产物 | `SwashbucklerDiary-app-unsigned`（1.2 MB）、`SwashbucklerDiary-ipa-unsigned`（1.2 MB）、`test-log` |
 
-> 注：该次运行记录属于仓库重置前的 fork（含完整 .NET 工程）。仓库转为独立的 iOS 项目后，
-> 旧运行记录随仓库删除而失效；当前 `main` 分支的每次提交都会重新触发同样的流程。
+仓库转为独立项目（不再是从 fork 拉出的分支）后重新跑过一次，结果一致。
 
 ### CI 比本机多抓到的两个问题
 

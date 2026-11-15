@@ -1,5 +1,9 @@
 # 侠客日记 · iOS 原生版
 
+[![iOS Build](https://github.com/zrtnb6/SwashbucklerDiary/actions/workflows/ios-build.yml/badge.svg?branch=main)](https://github.com/zrtnb6/SwashbucklerDiary/actions/workflows/ios-build.yml)
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE.txt)
+![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-lightgrey)
+
 > **用 SwiftUI 把原项目的 iOS 端从「没人维护的 WebView 套壳」重做成一个真正的原生应用。**
 >
 > 这不是 fork，不是上游的一个分支，也不是换皮。它复用原项目的**数据格式**与**交互理念**，
