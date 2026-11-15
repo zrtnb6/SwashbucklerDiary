@@ -5,9 +5,6 @@
 ![Platform](https://img.shields.io/badge/platform-iOS%2017%2B-lightgrey)
 
 > **用 SwiftUI 把原项目的 iOS 端从「没人维护的 WebView 套壳」重做成一个真正的原生应用。**
->
-> 这不是 fork，不是上游的一个分支，也不是换皮。它复用原项目的**数据格式**与**交互理念**，
-> 代码与界面 100% 重新实现，技术方向与原项目完全不同。
 
 原项目：[Yu-Core/SwashbucklerDiary](https://github.com/Yu-Core/SwashbucklerDiary)（Blazor Hybrid + .NET MAUI，AGPL-3.0）
 
